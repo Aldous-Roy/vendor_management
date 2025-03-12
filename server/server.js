@@ -4,12 +4,18 @@ import cors from 'cors';
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser';
 
+//importing routes
+import authUser from './routes/AuthUser.js';
+import registerUser from './routes/RegisterUser.js';
+
 const app = express();
 
+//extracting env
 dotenv.config();
 const MONGO_URI=process.env.MONGO_URI;
 const PORT=3000;
 
+//resolving cors errors
 const corsOptions = {
     origin: (origin, callback) => {
         const allowedOrigins = [
@@ -25,9 +31,15 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+//using some middlewares
 app.use(express.json());
 app.use(cookieParser());
 
+//Using Routes
+app.use(authUser);
+app.use(registerUser);
+
+//connecting to mongodb
 const connectDB = async () => {
     try 
     {
